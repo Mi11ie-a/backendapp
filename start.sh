@@ -7,7 +7,7 @@ dbusername=$3
 appport=$4
 jwtexp=$5
 
-
+touch .env
 sed -i -e "s/\(DB_HOST=\).*/\1$1/" \
 -e "s/\(DB_PORT=\).*/\1$2/" \
 -e "s/\(DB_USERNAME=\).*/\1$3/" \

@@ -14,7 +14,7 @@ sed -i -e "s/\(DB_HOST=\).*/\1$1/" \
 -e "s/\(JWT_EXPIRY=\).*/\1$5/" \
 -e "s/\(APP_PORT=\).*/\1$4/" \
 -e "s/\(SECRET_KEY=\).*/\/" \
--e "s/\(DB_PASSWORD=\).*/\/" \ xyz.cfg
+-e "s/\(DB_PASSWORD=\).*/\/" xyz.cfg
 
 echo "Starting express application"
 echo "Port: $4"

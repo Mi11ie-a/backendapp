@@ -1,7 +1,6 @@
 const express = require('express');
 const app = express();
 const cors = require('cors')
-const port = 3000;
 const jwte = require('jwt-encode');
 const jwtd = require('jwt-decode');
 const jwt = require('jsonwebtoken');
@@ -10,7 +9,7 @@ const SwaggerDoc = require('../../swagger.json');
 
 require('dotenv').config();
 const secret = process.env.SECRET_KEY;
-
+const port = process.env.APP_PORT;
 const bcrypt = require('bcrypt');
 
 const TokenType = 'Bearer';
@@ -326,14 +325,14 @@ app.post('/user/login', (req, res) => {
         }
 
         const jwtt = jwt.sign({
-            exp: Math.floor(Date.now() / 1000) + 86400,
+            exp: Math.floor(Date.now() / 1000) + Number.parseInt(process.env.JWT_EXPIRY || '8400'),
             data:jwtdata
         }, process.env.SECRET_KEY);
 
         const Token = {
             token: jwtt,
             token_type: "Bearer",
-            expires_in: 86400
+            expires_in: Number.parseInt(process.env.JWT_EXPIRY || '8400')
         }
 
         // Compare Passwords
@@ -589,5 +588,5 @@ app.get('/volcano/:id/comment', async(req,res) => {
 
 
 app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
+  console.log(`VolcanoAPI Application listening on port ${port}`)
 })

@@ -4,9 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "./start.sh localhost 3306 root 3001 86400",
+    "dev": "node src/API/Index.ts"
   },
-  "author": "",
+  "author": "Amelia Kirn",
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^5.1.1",

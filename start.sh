@@ -8,11 +8,7 @@ appport=$4
 jwtexp=$5
 
 touch .env
-sed -i -e "s/\(DB_HOST=\).*/\1$1/" \
--e "s/\(DB_PORT=\).*/\1$2/" \
--e "s/\(DB_USERNAME=\).*/\1$3/" \
--e "s/\(JWT_EXPIRY=\).*/\1$5/" \
--e "s/\(APP_PORT=\).*/\1$4/" .env
+echo "APP_PORT=$4 DB_PORT=$2 DB_HOST=$1 DB_USERNAME=$3 JWT_EXPIRY=$5" | sudo tee -a .env
 
 echo "Starting express application"
 echo "Port: $4"

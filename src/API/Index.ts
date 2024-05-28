@@ -60,17 +60,19 @@ async function DateValidation(date)
     const DateRegex = /^\d{4}-\d{2}-\d{2}$/;
     if (!DateRegex.test(date) || isNaN(Date.parse(date))) 
         { throw new DateError("Invalid input: dob must be a real date in format YYYY-MM-DD.", 400); }
-    
+    console.log("Passed 1")
     // Check if date is in past
     if (Date.parse(date) > Date.now()) {throw new DateError("Invalid input: dob must be a date in the past.", 400);}
-    
     // Check if days is valid and months is valid
 
     const DaysInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
     date = date.split("-");
+    console.log(date)
     if (!(date[1] > 0 && date[1] <= 12)) {throw new DateError("Invalid input: dob must be a real date in format YYYY-MM-DD.", 400);}
+    console.log("Passed 2")
     if (!(date[2] <= DaysInMonth[date[1]-1])) {throw new DateError("Invalid input: dob must be a real date in format YYYY-MM-DD.", 400)}
-    if (!(date[1] == 2 && date[2] <= DaysInMonth[date[1]-1] || (date[2] <= 29 && date[0] % 4 == 0))) {throw new DateError("Invalid input: dob must be a real date in format YYYY-MM-DD.", 400)}
+    console.log("Passed 3")
+    if (date[1] == 2 && !((date[2] <= DaysInMonth[date[1]-1]) || (date[2] <= 29 && date[0] % 4 == 0))) {throw new DateError("Invalid input: dob must be a real date in format YYYY-MM-DD.", 400)}
     
     return true;
 }

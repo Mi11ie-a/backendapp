@@ -66,6 +66,19 @@
           }
         }
       },
+      "VolcanoIdNotPresent": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "boolean",
+            "example": "true"
+          },
+          "message": {
+            "type": "string",
+            "example": "Malformed Request: id is a required parameter."
+          }
+        }
+      },
       "InvalidPopulatedWithinParameterVolcanoes": {
         "type": "object",
         "properties": {
@@ -235,6 +248,32 @@
           "message": {
             "type": "string",
             "example": "Invalid input: dob must be a date in the past."
+          }
+        }
+      },
+      "InvalidCommentBody": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "boolean",
+            "example": "true"
+          },
+          "message": {
+            "type": "string",
+            "example": "CommentBody and CommentTitle are required request body parameters"
+          }
+        }
+      },
+      "InvalidCommentBodyFormat": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "boolean",
+            "example": "true"
+          },
+          "message": {
+            "type": "string",
+            "example": "CommentBody and CommentTitle must be strings"
           }
         }
       }
@@ -920,6 +959,172 @@
                       "example": "n1234567"
                     }
                   }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+
+    "/volcano/{id}/comment": {
+      "get": {
+        "tags": ["Comments"],
+        "description": "A route to get all of the comments for a given volcano",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The ID of the volcano",
+            "required": true,
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        
+        "responses": {
+          "200": {
+            "description": "An array of objects containing the comment data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "Email": {
+                        "type": "string",
+                        "example": "mike@gmail.com"
+                      },
+                      "CommentTitle": {
+                          "type": "string",
+                          "example": "This volcano is awesome"
+                      },
+                      "CommentBody": {
+                          "type": "string",
+                          "example": "A 500 word essay as to why this volcano is the best"
+                      },
+                      "CommentTime": {
+                        "type": "string",
+                        "example": "2024-05-28 17:08:53"
+                    }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request: Click on 'Schema' below to see the possible error responses.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/VolcanoIdNotFound"
+                    },
+                    {
+                      "$ref": "#/components/schemas/VolcanoIdNotPresent"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["Comments"],
+        "description": "A route to add a comment to a volcano",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The ID of the volcano",
+            "required": true,
+            "schema": {
+              "type": "number",
+              "example": "1"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "A object with the comment data",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "CommentTitle": "Awesome Title",
+                  "CommentBody": "Awesome Body"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "An object with the comment data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Comment succesfully created"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized. Click on 'Schema' below to see the possible error responses.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/InvalidJWT"
+                    },
+                    {
+                      "$ref": "#/components/schemas/TokenExpired"
+                    },
+                    {
+                      "$ref": "#/components/schemas/MalformedAuthHeader"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request: Click on 'Schema' below to see the possible error responses.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/InvalidCommentBody"
+                    },
+                    {
+                      "$ref": "#/components/schemas/InvalidCommentBodyFormat"
+                    },
+                    {
+                      "$ref": "#/components/schemas/VolcanoIdNotFound"
+                    },
+                    {
+                      "$ref": "#/components/schemas/VolcanoIdNotPresent"
+                    }
+                  ]
                 }
               }
             }

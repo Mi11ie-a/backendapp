@@ -6,6 +6,9 @@ const jwtd = require('jwt-decode');
 const jwt = require('jsonwebtoken');
 const SwaggerUI = require('swagger-ui-express');
 const SwaggerDoc = require('../../swagger.json');
+const fs = require('fs')
+const https = require('https')
+
 
 require('dotenv').config();
 const secret = process.env.SECRET_KEY;
@@ -587,8 +590,11 @@ app.get('/volcano/:id/comment', async(req,res) => {
 
 })
 
+var Server = https.createServer({
+    key: fs.readFileSync('cert/server.key', 'utf8'),
+    cert: fs.readFileSync('cert/server.crt', 'utf8')
+}, app);
 
-
-app.listen(port, () => {
-  console.log(`VolcanoAPI Application listening on port ${port}`)
+Server.listen(port, () => {
+    console.log(`VolcanoAPI Application listening on port ${port}`)
 })
